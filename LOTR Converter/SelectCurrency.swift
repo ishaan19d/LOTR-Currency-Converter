@@ -11,6 +11,9 @@ struct SelectCurrency: View {
     
     @Environment(\.dismiss) var dismiss
     
+    @Binding var leftCurrency: Currency
+    @Binding var rightCurrency: Currency
+    
     var body: some View {
         ZStack{
             Image(.parchment)
@@ -22,20 +25,12 @@ struct SelectCurrency: View {
                 Text("Select the currency you are starting with:")
                     .fontWeight(.bold)
 
-                LazyVGrid(columns:[GridItem(),GridItem(),GridItem()]){
-                    ForEach(Currency.allCases){ currency in
-                        CurrencyIcon(currencyImage: currency.image, currencyName: currency.name)
-                    }
-                }
+                IconGrid(selectedCurrency:$leftCurrency)
                 
                 Text("Select the currency you would like to convert to:")
                     .fontWeight(.bold)
                 
-                LazyVGrid(columns:[GridItem(),GridItem(),GridItem()]){
-                    ForEach(Currency.allCases){ currency in
-                        CurrencyIcon(currencyImage: currency.image, currencyName: currency.name)
-                    }
-                }
+                IconGrid(selectedCurrency:$rightCurrency)
                 
                 Button("Done"){
                     dismiss()
@@ -55,5 +50,5 @@ struct SelectCurrency: View {
 }
 
 #Preview {
-    SelectCurrency()
+    SelectCurrency(leftCurrency: .constant(.copperPenny), rightCurrency: .constant(.silverPiece))
 }
