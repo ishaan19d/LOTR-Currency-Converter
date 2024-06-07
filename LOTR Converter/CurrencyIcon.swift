@@ -21,11 +21,12 @@ struct CurrencyIcon: View {
             Text(currencyName)
                 .padding(3)
                 .font(.caption)
+                .bold()
                 .frame(maxWidth: .infinity)
                 .background(.brown.opacity(0.75))
         })
         .padding(3)
-        .frame(width: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/,height: 100)
+        .frame(width: 100,height: 100)
         .background(.brown)
         .clipShape(.rect(cornerRadius: 25))
     }
