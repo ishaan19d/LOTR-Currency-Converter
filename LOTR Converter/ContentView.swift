@@ -27,6 +27,30 @@ struct ContentView: View {
         rightTyping = false
     }
     
+    let userDefaults = UserDefaults.standard
+    
+    private func saveLastConversion() {
+        userDefaults.set(leftAmount, forKey: "leftAmountKey")
+        userDefaults.set(rightAmount, forKey: "rightAmountKey")
+        userDefaults.set(leftCurrency.rawValue, forKey: "leftCurrencyKey")
+        userDefaults.set(rightCurrency.rawValue, forKey: "rightCurrencyKey")
+    }
+    
+    private func loadLastConversion() {
+        if let savedLeftAmount = userDefaults.object(forKey: "leftAmountKey") as? String {
+            leftAmount = savedLeftAmount
+        }
+        if let savedRightAmount = userDefaults.object(forKey: "rightAmountKey") as? String {
+            rightAmount = savedRightAmount
+        }
+        if let savedLeftCurrencyRawValue = userDefaults.object(forKey: "leftCurrencyKey") as? Double {
+            leftCurrency = Currency(rawValue: savedLeftCurrencyRawValue)!
+        }
+        if let savedRightCurrencyRawValue = userDefaults.object(forKey: "rightCurrencyKey") as? Double {
+            rightCurrency = Currency(rawValue: savedRightCurrencyRawValue)!
+        }
+    }
+    
     var body: some View {
         ZStack{
             Image(.background)
@@ -123,22 +147,27 @@ struct ContentView: View {
         }
         .task {
             try? Tips.configure()
+            loadLastConversion()
         }
         .onChange(of: leftAmount) {
             if leftTyping {
                 rightAmount = leftCurrency.convert(leftAmount, to: rightCurrency)
+                saveLastConversion()
             }
         }
         .onChange(of: rightAmount) {
             if rightTyping {
                 leftAmount = rightCurrency.convert(rightAmount, to: leftCurrency)
+                saveLastConversion()
             }
         }
         .onChange(of: leftCurrency, {
             leftAmount = rightCurrency.convert(rightAmount, to: leftCurrency)
+            saveLastConversion()
         })
         .onChange(of: rightCurrency, {
             rightAmount = leftCurrency.convert(leftAmount, to: rightCurrency)
+            saveLastConversion()
         })
         .sheet(isPresented: $showExchangeInfo, content: {
             ExchangeInfo()
