@@ -13,11 +13,11 @@ struct ContentView: View {
     @State var showExchangeInfo = false
     @State var showSelectCurrency = false
     
-    @State var leftAmount = ""
-    @State var rightAmount = ""
+    @State var leftAmount: String = (UserDefaults.standard.string(forKey: "leftAmountKey") ?? "")
+    @State var rightAmount: String = UserDefaults.standard.string(forKey: "rightAmountKey") ?? ""
     
-    @State var leftCurrency: Currency = .silverPiece
-    @State var rightCurrency: Currency = .goldPiece
+    @State var leftCurrency: Currency = Currency(rawValue: UserDefaults.standard.double(forKey: "leftCurrencyKey")) ?? .silverPiece
+    @State var rightCurrency: Currency = Currency(rawValue: UserDefaults.standard.double(forKey: "rightCurrencyKey")) ?? .goldPiece
     
     @FocusState var leftTyping
     @FocusState var rightTyping
@@ -27,30 +27,13 @@ struct ContentView: View {
         rightTyping = false
     }
     
-    let userDefaults = UserDefaults.standard
-    
-    private func saveLastConversion() {
-        userDefaults.set(leftAmount, forKey: "leftAmountKey")
-        userDefaults.set(rightAmount, forKey: "rightAmountKey")
-        userDefaults.set(leftCurrency.rawValue, forKey: "leftCurrencyKey")
-        userDefaults.set(rightCurrency.rawValue, forKey: "rightCurrencyKey")
+    private func saveLastConversion(){
+        UserDefaults.standard.setValue(leftCurrency.rawValue, forKey: "leftCurrencyKey")
+        UserDefaults.standard.setValue(rightCurrency.rawValue, forKey: "rightCurrencyKey")
+        UserDefaults.standard.setValue(leftAmount, forKey: "leftAmountKey")
+        UserDefaults.standard.setValue(rightAmount, forKey: "rightAmountKey")
     }
-    
-    private func loadLastConversion() {
-        if let savedLeftAmount = userDefaults.object(forKey: "leftAmountKey") as? String {
-            leftAmount = savedLeftAmount
-        }
-        if let savedRightAmount = userDefaults.object(forKey: "rightAmountKey") as? String {
-            rightAmount = savedRightAmount
-        }
-        if let savedLeftCurrencyRawValue = userDefaults.object(forKey: "leftCurrencyKey") as? Double {
-            leftCurrency = Currency(rawValue: savedLeftCurrencyRawValue)!
-        }
-        if let savedRightCurrencyRawValue = userDefaults.object(forKey: "rightCurrencyKey") as? Double {
-            rightCurrency = Currency(rawValue: savedRightCurrencyRawValue)!
-        }
-    }
-    
+
     var body: some View {
         ZStack{
             Image(.background)
@@ -67,69 +50,22 @@ struct ContentView: View {
                     .font(.largeTitle)
                     .foregroundStyle(.white)
                 
-                // Conversion Section
                 HStack{
-                    VStack{
-                        HStack{
-                            Image(leftCurrency.image)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 33)
-                            
-                            Text(leftCurrency.name)
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                        }
-                        .padding(.bottom,-5)
-                        .onTapGesture {
-                            showSelectCurrency.toggle()
-                        }
-                        .popoverTip(CurrencyTip(), arrowEdge: .bottom)
-                        
-                        TextField("Amount", text: $leftAmount)
-                            .textFieldStyle(.roundedBorder)
-                            .focused($leftTyping)
-                            .keyboardType(.decimalPad)
-
-                    }
+                    InputSection(currency: $leftCurrency, amount: $leftAmount, typing: _leftTyping, showSelectCurrency: $showSelectCurrency, isLeft: true)
                     
                     Image(systemName: "equal")
                         .font(.largeTitle)
                         .foregroundStyle(.white)
                         .symbolEffect(.pulse)
                     
-                    // Right Conversion Section
-                    VStack{
-                        //currency
-                        HStack{
-                            Text(rightCurrency.name)
-                                .font(.headline)
-                                .foregroundStyle(.white)
-                            
-                            Image(rightCurrency.image)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 33)
-                        }
-                        .padding(.bottom,-5)
-                        .onTapGesture {
-                            showSelectCurrency.toggle()
-                        
-                        }
-                        
-                        TextField("Amount", text: $rightAmount)
-                            .textFieldStyle(.roundedBorder)
-                            .multilineTextAlignment(.trailing)
-                            .focused($rightTyping)
-                            .keyboardType(.numberPad)
-                    }
+                    InputSection(currency: $rightCurrency, amount: $rightAmount, typing: _rightTyping, showSelectCurrency: $showSelectCurrency, isLeft: false)
                 }
                 .padding()
                 .background(.black.opacity(0.5))
                 .clipShape(.rect(cornerRadius: 25))
                 
                 Spacer()
-                // Info button
+                
                 HStack{
                     Spacer()
                     
@@ -147,7 +83,6 @@ struct ContentView: View {
         }
         .task {
             try? Tips.configure()
-            loadLastConversion()
         }
         .onChange(of: leftAmount) {
             if leftTyping {

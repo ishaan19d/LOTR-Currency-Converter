@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C5D7A9F2C16E400008A180C /* InputSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C5D7A9E2C16E400008A180C /* InputSection.swift */; };
 		4C65DA342C132EA900EBB686 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65DA332C132EA900EBB686 /* Currency.swift */; };
 		4C65DA362C132EE100EBB686 /* CurrencyIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65DA352C132EE100EBB686 /* CurrencyIcon.swift */; };
 		4C65DA382C132F9300EBB686 /* SelectCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C65DA372C132F9300EBB686 /* SelectCurrency.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4C5D7A9E2C16E400008A180C /* InputSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSection.swift; sourceTree = "<group>"; };
 		4C65DA332C132EA900EBB686 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		4C65DA352C132EE100EBB686 /* CurrencyIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyIcon.swift; sourceTree = "<group>"; };
 		4C65DA372C132F9300EBB686 /* SelectCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCurrency.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				4CF863B32C122C4400476A5B /* ExchangeRates.swift */,
 				4CF863B12C11B15700476A5B /* ExchangeInfo.swift */,
 				4C65DA352C132EE100EBB686 /* CurrencyIcon.swift */,
+				4C5D7A9E2C16E400008A180C /* InputSection.swift */,
 				4C65DA392C13858300EBB686 /* IconGrid.swift */,
 				4C65DA372C132F9300EBB686 /* SelectCurrency.swift */,
 				4C65DA332C132EA900EBB686 /* Currency.swift */,
@@ -164,6 +167,7 @@
 				4C65DA342C132EA900EBB686 /* Currency.swift in Sources */,
 				4CF863B22C11B15700476A5B /* ExchangeInfo.swift in Sources */,
 				4C65DA3C2C14618A00EBB686 /* CurrencyTip.swift in Sources */,
+				4C5D7A9F2C16E400008A180C /* InputSection.swift in Sources */,
 				4CF863A42C10608000476A5B /* ContentView.swift in Sources */,
 				4CF863A22C10608000476A5B /* LOTR_ConverterApp.swift in Sources */,
 				4C65DA362C132EE100EBB686 /* CurrencyIcon.swift in Sources */,
